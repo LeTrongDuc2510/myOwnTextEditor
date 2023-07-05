@@ -21,6 +21,8 @@ enum editorKey
     ARROW_RIGHT,
     ARROW_UP,
     ARROW_DOWN,
+    HOME_KEY,
+    END_KEY,
     PAGE_UP,
     PAGE_DOWN
 };
@@ -98,8 +100,12 @@ int editorReadKey()
                 {
                     switch (seq[1])
                     {
+                        case '1': return HOME_KEY;
+                        case '4': return END_KEY;
                         case '5': return PAGE_UP;
                         case '6': return PAGE_DOWN;
+                        case '7': return HOME_KEY;
+                        case '8': return END_KEY;
                     }
                 }
             } else {
@@ -108,8 +114,16 @@ int editorReadKey()
                     case 'A': return ARROW_UP;
                     case 'B': return ARROW_DOWN;
                     case 'C': return ARROW_RIGHT;
-                    case 'D': return ARROW_LEFT;            
+                    case 'D': return ARROW_LEFT;
+                    case 'H': return HOME_KEY;
+                    case 'F': return END_KEY;
                 }
+            }
+        } else if (seq[0] == 'O') {
+            switch (seq[1])
+            {
+                case 'H': return HOME_KEY;
+                case 'F': return END_KEY;
             }
         }
 
@@ -281,6 +295,18 @@ void editorProcessKeyPress()
             exit(0);
             break;
         
+        case PAGE_UP:
+        case PAGE_DOWN:
+        {
+            int times = E.screenrows;
+            while (times--)
+            {
+                editorMoveCursor(c == PAGE_UP ? ARROW_UP : ARROW_DOWN);
+            }
+            break;
+        }
+
+
         case ARROW_UP:
         case ARROW_DOWN:
         case ARROW_LEFT:
